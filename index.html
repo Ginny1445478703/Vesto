@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>资产管理大师</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 登录弹窗 -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <h2>💰 资产管理大师</h2>
+                <p>登录您的账户</p>
+            </div>
+            <div class="login-form" id="login-form">
+                <div class="form-group">
+                    <input type="text" id="login-username" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="密码">
+                </div>
+                <button class="btn btn-primary full-width" id="login-btn">登录</button>
+                <div class="form-switch">
+                    <span>还没有账户？</span>
+                    <button class="link-btn" id="show-register">立即注册</button>
+                </div>
+            </div>
+            <div class="register-form" id="register-form" style="display: none;">
+                <div class="form-group">
+                    <input type="text" id="register-username" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-password" placeholder="密码">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-repassword" placeholder="确认密码">
+                </div>
+                <button class="btn btn-primary full-width" id="register-btn">注册</button>
+                <div class="form-switch">
+                    <span>已有账户？</span>
+                    <button class="link-btn" id="show-login">立即登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新手提示遮罩 -->
+    <div class="onboarding-overlay" id="onboarding-overlay">
+        <div class="onboarding-step" id="step-1">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>👋 欢迎使用资产管理大师</h3>
+                <p>点击底部导航栏切换不同页面，查看您的资产状况。</p>
+                <button class="onboarding-btn" id="step1-btn">知道了 →</button>
+            </div>
+        </div>
+        <div class="onboarding-step" id="step-2" style="display: none;">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>📊 总览页面</h3>
+                <p>这里显示您的总资产净值、资产数量、日均成本和保值率。</p>
+                <button class="onboarding-btn" id="step2-btn">知道了 →</button>
+            </div>
+        </div>
+        <div class="onboarding-step" id="step-3" style="display: none;">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>➕ 添加资产</h3>
+                <p>点击底部中间的加号按钮，快速添加新的资产记录。</p>
+                <button class="onboarding-btn" id="step3-btn">知道了 →</button>
+            </div>
+        </div>
+        <div class="onboarding-step" id="step-4" style="display: none;">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>🎯 分类查看</h3>
+                <p>通过分类页面查看不同类型资产的分布情况。</p>
+                <button class="onboarding-btn" id="step4-btn">知道了 →</button>
+            </div>
+        </div>
+        <div class="onboarding-step" id="step-5" style="display: none;">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>📦 资产状态</h3>
+                <p>查看资产的服役状态，了解资产使用情况。</p>
+                <button class="onboarding-btn" id="step5-btn">知道了 →</button>
+            </div>
+        </div>
+        <div class="onboarding-step" id="step-6" style="display: none;">
+            <div class="onboarding-arrow"></div>
+            <div class="onboarding-content">
+                <h3>💹 闲置流转</h3>
+                <p>追踪卖出资产的收益情况，优化资产配置。</p>
+                <button class="onboarding-btn" id="step6-btn">完成</button>
+            </div>
+        </div>
+    </div>
+    <div class="header">
+        <div class="header-content">
+            <h1>💰 资产管理大师</h1>
+            <p>轻松掌握您的资产状况</p>
+        </div>
+        <div class="user-info" id="user-info">
+            <div class="avatar">👤</div>
+            <div class="username" id="username">用户名</div>
+            <button class="logout-btn" id="logout-btn">退出</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card" id="overview-card">
+            <div class="total-section">
+                <div class="total-value" id="total-value">¥0.00</div>
+                <div class="total-label">总资产净值</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="asset-count">0</div>
+                    <div class="stat-label">资产数量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="avg-cost">¥0.00</div>
+                    <div class="stat-label">日均成本</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="appreciation-rate">0%</div>
+                    <div class="stat-label">保值率</div>
+                </div>
+            </div>
+            <!-- 添加资产列表 -->
+            <div class="overview-assets">
+                <div class="card-title">📋 我的资产</div>
+                <div class="asset-list" id="overview-asset-list"></div>
+            </div>
+        </div>
+        
+        <div class="card" id="category-card">
+            <div class="card-title">📊 资产类型分布</div>
+            <div class="pie-chart">
+                <svg viewBox="0 0 100 100" width="100%" height="100%">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#e0e0e0" stroke-width="12"/>
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#667eea" stroke-width="12" stroke-dasharray="283" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="pie-center">
+                    <div class="rate" id="category-rate">0%</div>
+                    <div class="label">保值率</div>
+                </div>
+            </div>
+            <div class="legend" id="category-legend"></div>
+        </div>
+        
+        <div class="card" id="status-card">
+            <div class="card-title">📦 资产状态</div>
+            <div class="tabs">
+                <div class="tab active" data-status="active">服役中</div>
+                <div class="tab" data-status="retired">已退役</div>
+                <div class="tab" data-status="sold">已卖出</div>
+            </div>
+            <div class="asset-list" id="asset-list"></div>
+        </div>
+        
+        <div class="card" id="flow-card">
+            <div class="card-title">💹 闲置流转复盘</div>
+            <div class="profit-section">
+                <div class="profit-row">
+                    <span class="profit-label">卖出资产数</span>
+                    <span class="profit-value" id="sold-count">0</span>
+                </div>
+                <div class="profit-row">
+                    <span class="profit-label">总购入价值</span>
+                    <span class="profit-value">¥<span id="sold-cost">0.00</span></span>
+                </div>
+                <div class="profit-row">
+                    <span class="profit-label">总变现金额</span>
+                    <span class="profit-value">¥<span id="sold-revenue">0.00</span></span>
+                </div>
+                <div class="profit-row" style="border-top: 1px solid #e0e0e0; padding-top: 8px;">
+                    <span class="profit-label">总盈亏</span>
+                    <span class="profit-value" id="profit-total">¥0.00</span>
+                </div>
+            </div>
+            <div class="asset-list" id="sold-list"></div>
+        </div>
+    </div>
+    
+    <div class="nav-bar">
+        <div class="nav-item active" data-page="overview">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" alt="总览"/>
+            <div>总览</div>
+        </div>
+        <div class="nav-item" data-page="category">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M22 12h-4l-3 9L9 3l-3 9H2'/%3E%3C/svg%3E" alt="分类"/>
+            <div>分类</div>
+        </div>
+        <div class="nav-center">
+            <div class="add-btn" id="add-btn">+</div>
+        </div>
+        <div class="nav-item" data-page="status">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/%3E%3C/svg%3E" alt="状态"/>
+            <div>状态</div>
+        </div>
+        <div class="nav-item" data-page="flow">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M18 8l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E" alt="流转"/>
+            <div>流转</div>
+        </div>
+    </div>
+    
+    <!-- 删除了重复的 <div class="add-btn" id="add-btn">+</div> -->
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-title">添加资产</div>
+            <div class="form-group">
+                <label>资产名称</label>
+                <input type="text" id="asset-name" placeholder="例如：iPhone 15">
+            </div>
+            <div class="form-group">
+                <label>资产类型</label>
+                <select id="asset-category">
+                    <option value="数码产品">数码产品</option>
+                    <option value="家具家电">家具家电</option>
+                    <option value="交通工具">交通工具</option>
+                    <option value="房产">房产</option>
+                    <option value="投资理财产品">投资理财产品</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>购入价值（元）</label>
+                <input type="number" id="asset-cost" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label>购入日期</label>
+                <input type="date" id="asset-date">
+            </div>
+            <div class="form-group">
+                <label>当前价值（元）</label>
+                <input type="number" id="asset-value" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label>状态</label>
+                <select id="asset-status">
+                    <option value="active">服役中</option>
+                    <option value="retired">已退役</option>
+                    <option value="sold">已卖出</option>
+                </select>
+            </div>
+            <div class="form-group" id="convert-asset-group" style="display: none;">
+                <label>选择要退役的资产</label>
+                <select id="convert-asset">
+                    <option value="">请选择资产</option>
+                </select>
+            </div>
+            <div id="asset-form">
+                <!-- 原有的表单字段：名称、分类、购入价值、购入日期、当前价值 -->
+            </div>
+            <div class="form-group" id="sell-date-group" style="display: none;">
+                <label>卖出日期</label>
+                <input type="date" id="sell-date">
+            </div>
+            <div class="form-group" id="sell-price-group" style="display: none;">
+                <label>卖出价格（元）</label>
+                <input type="number" id="sell-price" placeholder="0.00">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancel-btn">取消</button>
+                <button class="btn btn-primary" id="save-btn">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
